@@ -1,0 +1,60 @@
+{
+  "name": "slippi-clips",
+  "version": "1.0.0",
+  "description": "A way to transmit clips as slp files, for later recording",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "productName": "Slippi Clips",
+    "appId": "com.b3nd3rssbm.slippi-clips",
+    "files": [
+      "index.html",
+      "index.js",
+      "package.json"
+    ],
+    "artifactName": "Slippi-Clips-${version}-${os}.${ext}",
+    "mac": {
+      "category": "your.app.category.type",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": "portable",
+      "publish": [
+        "github"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ]
+    },
+    "dmg": {
+      "icon": "./icon.png"
+    },
+    "nsis": {
+      "unicode": "false"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/b3nd3r-ssbm/Slippi-Clips"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "electron-store": "^6.0.1"
+  },
+  "devDependencies": {
+    "electron": "^9.1.1",
+    "electron-builder": "^22.8.0"
+  },
+  "author": "b3nd3r-ssbm",
+  "license": "GPL-3.0-or-later"
+}

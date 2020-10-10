@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<title>Slippi Clips</title>
+		<style>
+			body{background-color:#1d1a1a;color:white;font-family:Segoe UI;text-align:center;font-size:18px;}
+			button{background-color:#ffffff !important; border:none;font-size:18px; color:#000;font-family:Segoe UI;}
+			button:hover{background-color:#aaaaaa !important;}
+			.init{height:50;width:275;}
+			.button{background-color:#ffffff !important; border:none;font-size:18px !important;color:#000 !important;display:inline-block;}
+			.button:hover{background-color:#aaaaaa !important;}
+		</style>
+	</head>
+	<body onload="init()">
+		<script src="index.js"></script>
+		<div id="settings" hidden>
+			<button onclick="main()">Back to main app!</button>
+			<label for="outputFolder">Output Directory</label>
+			<input type="text" id="outputFolder" onchange="makeBackslash('outputFolder')"><br>
+			<button onclick="updatePath()">Update Output!</button><br>
+			<label for="isoPath">ISO path:</label>
+			<input type="text" id="isoPath" onchange="makeBackslash('isoPath')"><br>
+			<span style="color:#f00">You must have a valid iso for playback</span><br>
+			<button onclick="updateIso()">Update Iso Path!</button><br>
+		</div>
+		<div id="mainApp">
+			<div id="init">
+				<br><br><br><br><br>
+				<button onclick="forceSettings()" class="init">Settings</button><br><br>
+				<button onclick="genScreen()" class="init">Generate .sclp files (Slippi Clips)</button><br>
+				<br><button onclick="watchScreen()" class="init">Watch .sclp files (Slippi Clips)</button>
+			</div>
+			<div id="generator" hidden>
+				<span id="firstGen">
+					<button onclick="main()">back</button><br>
+					<form>
+						<br><label for="slpIn">Slp file containing clip <button>Choose File</button><br><span id="fileId"></span></label>
+						<input hidden type="file" id="slpIn" accept=".slp" onchange="updateFileName('slpIn','fileId')">
+						<br><label for="start">Timer at start of clip (just minutes and seconds, mm:ss): </label>
+						<input type="text" id="start" maxlength="5">
+						<br><label for="end">Timer at end of clip (just minutes and seconds, mm:ss): </label>
+						<input type="text" id="end" maxlength="5"><br>
+						<button onclick="generate()">Generate Clip!</button>
+						<br><h2>OR</h2><br>
+						<label for="clippi">Create sclps from clippi json<br><button>Choose File</button><br><span id="jsonName"></span></label>
+						<input type="file" accept=".json" id="clippi" hidden onchange="updateFileName('clippi','jsonName')"><br>
+						<button onclick="genJson()">Submit and create clips!</button>
+						<input type="reset" id="regenButton" hidden>
+					</form>
+				</span>
+				<span id="fileWrite" hidden=true>
+					File <span id="fileName"></span> written<br>
+					<button onclick="regen()">Generate another!</button>
+				</span>
+				
+			</div>
+			<div id="viewer" hidden>
+				<button onclick="main()">back</button><br><br>
+				<label for="sclp">Insert sclp file(s) here:</label>
+				<input type="file" id="sclp" accept=".sclp" multiple><br>
+				<br><button onclick="playback()">Watch!</button>
+			</div>
+		</div>
+	</body>
+</html>
