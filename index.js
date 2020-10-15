@@ -9,6 +9,9 @@ const store=new Store();
 var appDataPath;
 var jsonFin;
 var win;
+var slider;
+var lastFrame;
+var ready=false;
 
 if (app !== undefined) {
     app.on('ready', function () {
@@ -46,6 +49,7 @@ function makeBackString(str){
 
 function init(){
 	appDataPath=store.get('appdata');
+	main();
 	if(store.get('output')==""||store.get('output')==undefined){
 		forceSettings();
 	}
@@ -62,6 +66,14 @@ function init(){
 		watchScreen();
 		store.delete('watchReload');
 	}
+	
+	if(store.get('fileSaved')!=undefined&&store.get('fileSaved')!=""){
+		genScreen();
+		document.getElementById('fileName').innerHTML=store.get('fileSaved');
+		document.getElementById("fileWrite").hidden=false;
+		document.getElementById("firstGen").hidden=true;
+		store.delete('fileSaved');
+	}
 }
 
 function updatePath(){
@@ -72,6 +84,7 @@ function updatePath(){
 function forceSettings(){
 	document.getElementById("mainApp").hidden=true;
 	document.getElementById("settings").hidden=false;
+	document.getElementById("navBar").hidden=false;
 }
 
 function main(){
@@ -80,24 +93,28 @@ function main(){
 	document.getElementById("settings").hidden=true;
 	document.getElementById("generator").hidden=true;
 	document.getElementById("viewer").hidden=true;
+	document.getElementById("navBar").hidden=true;
 }
 
 function genScreen(){
 	main();
 	document.getElementById("init").hidden=true;
 	document.getElementById("generator").hidden=false;
+	document.getElementById("navBar").hidden=false;
 }
 
 function watchScreen(){
 	main();
 	document.getElementById("init").hidden=true;
 	document.getElementById("viewer").hidden=false;
+	document.getElementById("navBar").hidden=false;
 }
 
 function regen(){
 	document.getElementById("regenButton").click();
 	document.getElementById("fileWrite").hidden=true;
 	document.getElementById("firstGen").hidden=false;
+	document.getElementById("navBar").hidden=false;
 }
 
 function generate(){
@@ -114,6 +131,7 @@ function generate(){
 	startFrame=Buffer.from(startFrame).toString('hex');
 	endFrame=Buffer.from(endFrame).toString('hex');
 	let addData="7B7B5507636C6970535507747275655507636C69705374617274535507"+startFrame+"5507636C6970456E64535507"+endFrame+"7d7d";
+	store.set('fileSaved',file.name.substring(0,file.name.length-2)+"clp");
 	document.getElementById('fileName').innerHTML="Wrote File "+file.name.substring(0,file.name.length-2)+"clp";
 	document.getElementById("fileWrite").hidden=false;
 	document.getElementById("firstGen").hidden=true;
@@ -228,4 +246,37 @@ function genJson(){
 
 function updateFileName(id1,id2){
 	document.getElementById(id2).innerHTML=document.getElementById(id1).files[0].name;
+	if(id1=='slpIn'){
+		document.getElementById("times").hidden=false;
+	}
+	//loadGenFile();
 }
+
+/*function loadGenFile(){
+	let data=fs.readFileSync(document.getElementById("slpIn").files[0].path, 'hex').toUpperCase();
+	while(data==undefined){}
+	let index1=data.indexOf("55096C6173744672616D656C")+24;
+	let returnData="";
+	for(let i=index1;i<index1+8;i++){
+		returnData+=data.charAt(i);
+	}
+	readyGen(returnData);
+	showSlide();
+}
+
+function readyGen(data){
+	lastFrame=parseInt(data,16);
+	ready=true;
+}
+
+function showSlide(){
+	document.getElementById("times").hidden=false;
+}
+
+function framesToTime(frames){
+	frames+=123;
+	let seconds=Math.floor(frames/60);
+	let minutes=Math.floor(seconds/60);
+	return ""+minutes+":"+seconds;
+}
+*/

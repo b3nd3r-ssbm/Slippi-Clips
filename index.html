@@ -8,18 +8,24 @@
 			.init{height:50;width:275;}
 			.button{background-color:#ffffff !important; border:none;font-size:18px !important;color:#000 !important;display:inline-block;}
 			.button:hover{background-color:#aaaaaa !important;}
+			.navBar{height:30;width:200;}
 		</style>
 	</head>
 	<body onload="init()">
 		<script src="index.js"></script>
+		<div id="navBar" style="text-align:center;background-color:#ffffff !important;" hidden>
+			<button class="navBar" onclick="main()">Main Menu</button>
+			<button class="navBar" onclick="forceSettings()">Settings</button>
+			<button class="navBar" onclick="genScreen()">Generate Sclps</button>
+			<button class="navBar" onclick="watchScreen()">Watch Sclps</button>
+		</div><br><br>
 		<div id="settings" hidden>
-			<button onclick="main()">Back to main app!</button>
-			<label for="outputFolder">Output Directory</label>
-			<input type="text" id="outputFolder" onchange="makeBackslash('outputFolder')"><br>
-			<button onclick="updatePath()">Update Output!</button><br>
+			<label for="outputFolder">Output Directory:</label>
+			<input type="text" id="outputFolder" onchange="makeBackslash('outputFolder')"><br><br>
+			<button onclick="updatePath()">Update Output!</button><br><br>
 			<label for="isoPath">ISO path:</label>
-			<input type="text" id="isoPath" onchange="makeBackslash('isoPath')"><br>
-			<span style="color:#f00">You must have a valid iso for playback</span><br>
+			<input type="text" id="isoPath" onchange="makeBackslash('isoPath')"><br><br>
+			<span style="color:#f00">You must have a valid iso for playback</span><br><br>
 			<button onclick="updateIso()">Update Iso Path!</button><br>
 		</div>
 		<div id="mainApp">
@@ -31,18 +37,19 @@
 			</div>
 			<div id="generator" hidden>
 				<span id="firstGen">
-					<button onclick="main()">back</button><br>
 					<form>
-						<br><label for="slpIn">Slp file containing clip <button>Choose File</button><br><span id="fileId"></span></label>
+						<br><label for="slpIn">Slp file containing clip <br><span id="fileId"></span><br><span class="button">Choose File</span><br></label>
 						<input hidden type="file" id="slpIn" accept=".slp" onchange="updateFileName('slpIn','fileId')">
-						<br><label for="start">Timer at start of clip (just minutes and seconds, mm:ss): </label>
-						<input type="text" id="start" maxlength="5">
-						<br><label for="end">Timer at end of clip (just minutes and seconds, mm:ss): </label>
-						<input type="text" id="end" maxlength="5"><br>
-						<button onclick="generate()">Generate Clip!</button>
+						<span id="times" hidden>
+							<br><label for="start">Timer at Start of Clip: (mm:ss)</label>
+							<input type="text" id="start"><br>
+							<label for="end">Timer at End of Clip: (mm:ss)</label>
+							<input type="text" id="end"><br>
+						</span>
+						<br><button onclick="generate()">Generate Clip!</button>
 						<br><h2>OR</h2><br>
-						<label for="clippi">Create sclps from clippi json<br><button>Choose File</button><br><span id="jsonName"></span></label>
-						<input type="file" accept=".json" id="clippi" hidden onchange="updateFileName('clippi','jsonName')"><br>
+						<label for="clippi">Create sclps from clippi json<br><span id="jsonName"></span><br><span class="button">Choose File</span></label>
+						<input type="file" accept=".json" id="clippi" hidden onchange="updateFileName('clippi','jsonName')"><br><br>
 						<button onclick="genJson()">Submit and create clips!</button>
 						<input type="reset" id="regenButton" hidden>
 					</form>
@@ -54,7 +61,6 @@
 				
 			</div>
 			<div id="viewer" hidden>
-				<button onclick="main()">back</button><br><br>
 				<label for="sclp">Insert sclp file(s) here:</label>
 				<input type="file" id="sclp" accept=".sclp" multiple><br>
 				<br><button onclick="playback()">Watch!</button>
