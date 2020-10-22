@@ -28,10 +28,10 @@ if (app !== undefined) {
 
 function makeBackslash(id){
 	let checked=document.getElementById(id);
-	let val=checked.value;
-	for(let i=0;i<val.length;i++){
-		if(val.charAt(i)=='\\'&&val.charAt(i-1)!='\\'&&val.charAt(i+1)!='\\'){
-			checked.value=val.substring(0,i)+"\\\\"+val.substring(i+1);
+	let i=0;
+	for(i=0;i<checked.value.length;i++){
+		if(checked.value.charAt(i)=='\\'&&checked.value.charAt(i-1)!='\\'&&checked.value.charAt(i+1)!='\\'){
+			checked.value=checked.value.substring(0,i)+"\\\\"+checked.value.substring(i+1);
 		} 
 	}
 }
