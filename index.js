@@ -23,7 +23,12 @@ if (app !== undefined) {
             });
             win.loadURL(`file://${__dirname}/index.html`);
         });
-    appDataPath = app.getPath('appData');
+    if(process.platform=='win32'||process.platform=='darwin'){
+      appDataPath = app.getPath('appData');
+    }
+	else{
+	  appDataPath = "";
+	}
     store.set('appdata', appDataPath);
 }
 
@@ -230,9 +235,16 @@ function playback() {
         json = queue(json, fileList);
     }
     jsonFin = json;
-    fs.writeFile(path.join(appDataPath, 'slippi-clips', 'temp.json'), JSON.stringify(json), 'utf8', (err) => {
-        loadFile();
-    });
+    if(process.platform=='win32'||process.platform=='darwin'){
+		fs.writeFile(path.join(appDataPath, 'slippi-clips', 'temp.json'), JSON.stringify(json), 'utf8', (err) => {
+			loadFile();
+		});
+	}
+	else{
+		fs.writeFile(path.join(process.env.HOME + "/.local/share", 'slippi-clips', 'temp.json'), JSON.stringify(json), 'utf8', (err) => {
+			loadFile();
+		});
+	}
     store.set('watchReload', true);
     location = location;
 }
@@ -279,9 +291,15 @@ function updateIso() {
 }
 
 function loadFile() {
-    let dolphinPath = makeBackString(path.join(appDataPath, "Slippi Desktop App", "dolphin", "Dolphin.exe"));
-    let jsonPath = makeBackString(path.join(appDataPath, 'slippi-clips', 'temp.json'));
-    exec("\"" + dolphinPath + "\" -i " + jsonPath + " -e \"" + store.get('iso') + "\"");
+    let dolphinPath = getDolphinPath();
+    let jsonPath;
+    if(process.platform=='linux'){
+		jsonPath=path.join(process.env.HOME + "/.local/share", 'slippi-clips', 'temp.json');
+	}
+	else{
+		jsonPath = path.join(appDataPath, 'slippi-clips', 'temp.json');
+    }
+	exec("\"" + dolphinPath + "\" -i " + jsonPath + " -e \"" + store.get('iso') + "\"");
 }
 
 function genJson() {
@@ -335,31 +353,50 @@ function updateFileName(id1, id2) {
     //loadGenFile();
 }
 
+function getDolphinPath() {
+    let execName;
+	let respectiveApp = "";
+	switch (process.platform) {
+      case "win32":
+        execName = "Dolphin.exe";
+		respectiveApp = path.join(appDataPath,"Slippi Desktop App","dolphin");
+		break;
+      case "darwin":
+        execName = "Dolphin.app";
+		respectiveApp = path.join(appDataPath,"Slippi Desktop App","dolphin");
+		break;
+      default:
+        execName = "dolphin-emu";
+		break;
+    }
+  
+    return path.join(respectiveApp, execName);
+}
 /*function loadGenFile(){
-	let data=fs.readFileSync(document.getElementById("slpIn").files[0].path, 'hex').toUpperCase();
-	while(data==undefined){}
-	let index1=data.indexOf("55096C6173744672616D656C")+24;
-	let returnData="";
-	for(let i=index1;i<index1+8;i++){
-		returnData+=data.charAt(i);
-	}
-	readyGen(returnData);
-	showSlide();
+  let data=fs.readFileSync(document.getElementById("slpIn").files[0].path, 'hex').toUpperCase();
+  while(data==undefined){}
+  let index1=data.indexOf("55096C6173744672616D656C")+24;
+  let returnData="";
+  for(let i=index1;i<index1+8;i++){
+    returnData+=data.charAt(i);
+  }
+  readyGen(returnData);
+  showSlide();
 }
 
 function readyGen(data){
-	lastFrame=parseInt(data,16);
-	ready=true;
+  lastFrame=parseInt(data,16);
+  ready=true;
 }
 
 function showSlide(){
-	document.getElementById("times").hidden=false;
+  document.getElementById("times").hidden=false;
 }
 
 function framesToTime(frames){
-	frames+=123;
-	let seconds=Math.floor(frames/60);
-	let minutes=Math.floor(seconds/60);
-	return ""+minutes+":"+seconds;
+  frames+=123;
+  let seconds=Math.floor(frames/60);
+  let minutes=Math.floor(seconds/60);
+  return ""+minutes+":"+seconds;
 }
 */
