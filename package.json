@@ -1,6 +1,6 @@
 {
   "name": "slippi-clips",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A way to transmit clips as slp files, for later recording",
   "main": "index.js",
   "scripts": {
