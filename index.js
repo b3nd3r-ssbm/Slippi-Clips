@@ -358,15 +358,15 @@ function getDolphinPath() {
 	let respectiveApp = "";
 	switch (process.platform) {
       case "win32":
-        execName = "Dolphin.exe";
+        execName = "Slippi Dolphin.exe";
 		respectiveApp = path.join(appDataPath,"Slippi Desktop App","dolphin");
 		break;
       case "darwin":
-        execName = "Dolphin.app";
+        execName = "Slippi Dolphin.app";
 		respectiveApp = path.join(appDataPath,"Slippi Desktop App","dolphin");
 		break;
       default:
-        execName = "dolphin-emu";
+        execName = "Slippi_Playback-x86_64.AppImage";
 		break;
     }
   
