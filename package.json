@@ -53,7 +53,7 @@
   },
   "devDependencies": {
     "electron": "^9.1.1",
-    "electron-builder": "^22.8.0"
+    "electron-builder": "^23.3.3"
   },
   "author": "b3nd3r-ssbm",
   "license": "GPL-3.0-or-later"
