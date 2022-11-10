@@ -52,7 +52,7 @@
     "electron-store": "^6.0.1"
   },
   "devDependencies": {
-    "electron": "^9.1.1",
+    "electron": "^21.2.3",
     "electron-builder": "^22.8.0"
   },
   "author": "b3nd3r-ssbm",
